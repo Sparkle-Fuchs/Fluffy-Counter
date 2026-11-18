@@ -10,10 +10,13 @@ if test $1 == "--help"; then
 	echo -e "Folgende Parameter können angegeben werden:\n"
 	echo -e "1. Convetion\t\t Hiermit wird die Convention ausgewählt, diese kann wie folgt angegeben werden: \"--zodiacon\""
 	echo -e "2. Position\t\t Hiermit kann der Test in alle Richtungen verschoben werden- erster Wert Horizontal, zweiter Wert Vertikal. Beispiel \"+20+0\""
-	echo -e "3. Text Color\t\t Hiermit kann die Farbe des Textes gewählt werden. Hierfür entweder Wörter oder den HEX-Code der Farbe verwenden z.B. \"black\" oder \"\#FF2500\""
-	echo -e "4. Outline\t\t Hiermit kann die Stärke der Outline definiert werden. Hierfür einfach einen Ganzzahl angeben. z.B 1"
-	echo -e "5. tOutline Color\t Hiermit kann die Farbe der Outline definiert werden. Hierfür entweder Wörter oder den HEX-Code der Farbe verwenden z.B. \"black\" oder \"\#FF2500\"\n"
-	echo -e "Beispiel: Fluffy-Counter.sh --zodiacon \"+7+50\" \"#a8a7a7\" 5 \"black\"\n\n"
+	echo -e "3. Text Color\t\t Hiermit kann die Farbe des Textes gewählt werden. Hierfür entweder Wörter oder den HEX-Code der Farbe verwenden z.B. \"black\" oder \"\#FF2500\"."
+	echo -e "4. Outline\t\t Hiermit kann die Stärke der Outline definiert werden. Hierfür einfach einen Ganzzahl angeben. z.B 1."
+	echo -e "5. Outline Color\t Hiermit kann die Farbe der Outline definiert werden. Hierfür entweder Wörter oder den HEX-Code der Farbe verwenden z.B. \"black\" oder \"\#FF2500\"."
+	echo -e "6. Schriftart\t\t Hiermit kann die Schriftart definiert werden. Name der Schriftart angeben: z.B. \"DejaVu-Sans-Bold\"."
+	echo -e "7. Schriftgröße\t\t Hiermit kann die Schriftgröße definiert werden. Hierfür einfach einen Ganzzahl angeben. z.B 96."
+	echo -e "8. Anker\t\t Hiermit kann der Bezugspunkt ausgewählt werden. Verfügbar: center, east, south, west, north.\n"	
+	echo -e "Beispiel: Fluffy-Counter.sh --zodiacon \"+7+50\" \"#a8a7a7\" 5 \"black\" \"DejaVu-Sans-Bold\" 96 \"east\"\n\n"
 	exit 0
 fi
 
@@ -67,7 +70,13 @@ else
 fi
 
 if test $1 == "--zodiacon"; then
+	touch ./zodiacon_date
 	target_date=$(cat ./zodiacon_date)
 	days=$(( ($(date -d $target_date +%s) - $(date +%s)) / 86400 )); magick ./Desktop/ZodiaCon2022.jpg -gravity east -font $font_type -pointsize $font_size -fill "$selected_color" -stroke "$outline_color" -strokewidth "$outline_strong" -annotate "$padding" "$days days left" ./Desktop/zodiacon2.png
-	echo "Bild generiert!"
+	
+	if [ $? -eq 0 ]; then
+		echo -e "\nBild generiert!\n"
+	else
+		echo echo -e "\nProzess fehlgeschlagen!\n"
+	fi
 fi
